@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://www.telc.net/sitemap.xml
+Sitemap: https://telcsuccess.org/sitemap.xml

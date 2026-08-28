@@ -1,12 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { connectToDatabase } from "@/lib/db";
+import { sendCandidateSupportNotification, sendContactNotification } from "@/lib/mailer";
 import { CandidateSupport } from "@/models/CandidateSupport";
 import { CertificateRecord } from "@/models/CertificateRecord";
 import { ContactInquiry } from "@/models/ContactInquiry";
 import { ExamCenter } from "@/models/ExamCenter";
 
 /**
- * Submit Contact Form Inquiry to MongoDB Atlas
+ * Submit Contact Form Inquiry to MongoDB Atlas and Send Admin Email via Google SMTP
  */
 export const submitContactInquiry = createServerFn({ method: "POST" })
   .validator((data: { name: string; email: string; topic: string; message: string }) => data)
@@ -20,6 +21,15 @@ export const submitContactInquiry = createServerFn({ method: "POST" })
         message: data.message,
         status: "Neu",
       });
+
+      // Send automated admin email notification via Google SMTP
+      await sendContactNotification({
+        name: data.name,
+        email: data.email,
+        topic: data.topic,
+        message: data.message,
+      });
+
       return { success: true, id: inquiry._id.toString() };
     } catch (error: any) {
       console.error("Fehler beim Speichern in MongoDB:", error);
@@ -28,22 +38,34 @@ export const submitContactInquiry = createServerFn({ method: "POST" })
   });
 
 /**
- * Submit B2 Candidate Support Registration to MongoDB Atlas
+ * Submit B2 Candidate Support Registration to MongoDB Atlas and Send Admin Email via Google SMTP
  */
 export const submitCandidateSupportAction = createServerFn({ method: "POST" })
   .validator((data: { candidateName: string; email: string; phone?: string; targetExam?: string; notes?: string }) => data)
   .handler(async ({ data }) => {
     try {
       await connectToDatabase();
+      const services = ["Exam Preparation", "Registration Assistance", "Exam Guidance", "Results Support"];
       const reg = await CandidateSupport.create({
         candidateName: data.candidateName,
         email: data.email,
         phone: data.phone || "",
         targetExam: data.targetExam || "telc Deutsch B2",
-        requestedServices: ["Exam Preparation", "Registration Assistance", "Exam Guidance", "Results Support"],
+        requestedServices: services,
         notes: data.notes || "",
         status: "Eingegangen",
       });
+
+      // Send automated admin email notification via Google SMTP
+      await sendCandidateSupportNotification({
+        candidateName: data.candidateName,
+        email: data.email,
+        phone: data.phone,
+        targetExam: data.targetExam,
+        requestedServices: services,
+        notes: data.notes,
+      });
+
       return { success: true, id: reg._id.toString() };
     } catch (error: any) {
       console.error("Fehler bei B2 Anmeldung in MongoDB:", error);

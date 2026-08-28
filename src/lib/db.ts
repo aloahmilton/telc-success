@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI =
-  process.env["MONGODB_URI"] ||
-  "mongodb+srv://ialoahmilton_db_user:ZBmz29Y0jgD5N9Sp@cluster0.lrgq2kv.mongodb.net/telc_db?retryWrites=true&w=majority";
+const MONGODB_URI = process.env["MONGODB_URI"];
 
 if (!MONGODB_URI) {
-  throw new Error("Bitte definieren Sie MONGODB_URI in der .env Datei");
+  throw new Error(
+    "MONGODB_URI ist nicht in der .env-Datei oder in den Umgebungsvariablen definiert."
+  );
 }
 
 /**
