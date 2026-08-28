@@ -1,33 +1,28 @@
-# telc-success
+# telc-success - Comprehensive German Language Exam & Certification Platform
 
-we need to creat this this exact same thing for we need to rebrand the site after cleint ops out
-first image is how the cookies open thats desktop view
-the second image is the website view 
-here is the link to extrct all assets 
-https://www.telc.net/
+A 1:1 rebranded web application matching `https://www.telc.net/`, featuring:
+- **Language Exams (A1–C2, Beruf, Pflege)**: Interactive level filtering and search.
+- **Prüfungszentrum Finder**: Search 3.000+ accredited exam centers worldwide by city or zip code.
+- **Certificate Verification Portal**: Real-time online validation for employers and authorities.
+- **telc Campus & Audio Hub**: Interactive audio player for listening tests and PDF mock test downloads.
+- **Prüferqualifizierung**: Examiner licensing requirements and seminar booking.
+- **Candidate B2 Support**: Specialized preparation, registration assistance, and strategy coaching.
+- **MongoDB Atlas Integration**: Server actions connected to MongoDB Atlas for contact inquiries and candidate registrations.
+- **Multi-language Support**: German (DE), English (EN), Spanish (ES), and Turkish (TR).
 
-please get all assets and its pages and its menu same site laguage is in 4 main languages
-
-as you can see as well don disappoint me 
-GOoooo
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/03605544-21af-45ac-9790-210d47e6908a).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+## Tech Stack
+- **Framework**: Vite + React 19 + TanStack Router + TanStack Start
+- **Styling**: Tailwind CSS v4 with custom HSL brand color tokens
+- **Database**: MongoDB Atlas + Mongoose
+- **Icons**: Lucide React
 
 ## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm install
 npm run dev
+```
+
+## Production Build
+```sh
+npm run build
 ```
