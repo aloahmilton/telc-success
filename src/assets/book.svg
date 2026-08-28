@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="54.502" height="62.002" viewBox="0 0 54.502 62.002">
+  <g id="icon" transform="translate(-107.29 -35.52)">
+    <path id="book" d="M148.761,55.271H129.072m0,7.5h19.689m10.238,30h.386a1.408,1.408,0,0,1,1.406,1.406v.937a1.41,1.41,0,0,1-1.406,1.406h-41.72a9.373,9.373,0,0,1-9.376-9.371V45.9a9.375,9.375,0,0,1,9.371-9.376h40.319a2.806,2.806,0,0,1,2.812,2.8V82.46a2.822,2.822,0,0,1-1.746,2.6A22.327,22.327,0,0,0,159,92.773Zm.033-7.5h-40.48c-6.087-.066-6.062,7.433,0,7.5h40.48" fill="none" stroke="#027b91" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+    <line id="Linie_5" data-name="Linie 5" y2="48.752" transform="translate(120.309 36.52)" fill="none" stroke="#027b91" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line>
+  </g>
+</svg>
