@@ -117,6 +117,7 @@ export function CookieConsent() {
   const { lang } = useLang();
   const c = copy[lang];
   const [visible, setVisible] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [cats, setCats] = useState<Categories>({
     necessary: true,
     preferences: false,
@@ -142,14 +143,14 @@ export function CookieConsent() {
     <div
       role="dialog"
       aria-label={c.title}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card shadow-lift"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card shadow-lift max-h-[90vh] overflow-y-auto"
     >
       <div className="mx-auto grid max-w-[105rem] gap-6 px-6 py-6 lg:grid-cols-[1fr_20rem]">
         <div>
           <h2 className="text-sm font-bold text-foreground">{c.title}</h2>
           <p className="mt-2 max-w-4xl text-xs leading-relaxed text-muted-foreground">{c.body}</p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
             <img src={logo} alt="Telc-success" width={28} height={28} loading="lazy" className="h-7 w-7" />
             <Toggle checked locked label={c.labels.necessary} />
             <Toggle
@@ -167,11 +168,36 @@ export function CookieConsent() {
               onChange={() => setCats((p) => ({ ...p, marketing: !p.marketing }))}
               label={c.labels.marketing}
             />
-            <button type="button" className="link-arrow">
-              {c.details}
-              <ChevronRight className="h-3.5 w-3.5" />
+            <button
+              type="button"
+              onClick={() => setShowDetails(!showDetails)}
+              className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline cursor-pointer"
+            >
+              <span>{c.details}</span>
+              <ChevronRight className={`h-3.5 w-3.5 transition-transform ${showDetails ? "rotate-90" : ""}`} />
             </button>
           </div>
+
+          {showDetails && (
+            <div className="mt-4 grid gap-3 rounded-lg border border-border bg-secondary/40 p-4 text-xs text-muted-foreground animate-in fade-in duration-200">
+              <div>
+                <strong className="text-foreground font-bold">{c.labels.necessary}:</strong>
+                <p className="mt-0.5">Notwendige Cookies helfen dabei, eine Website nutzbar zu machen, indem sie Grundfunktionen wie Seitennavigation und Zugriff auf sichere Bereiche ermöglichen.</p>
+              </div>
+              <div>
+                <strong className="text-foreground font-bold">{c.labels.preferences}:</strong>
+                <p className="mt-0.5">Präferenz-Cookies ermöglichen einer Website sich an Informationen zu erinnern, die die Art beeinflussen, wie sich eine Website verhält oder aussieht, wie z.B. Ihre bevorzugte Sprache.</p>
+              </div>
+              <div>
+                <strong className="text-foreground font-bold">{c.labels.statistics}:</strong>
+                <p className="mt-0.5">Statistik-Cookies helfen Website-Besitzern zu verstehen, wie Besucher mit Websites interagieren, indem Informationen anonym gesammelt und gemeldet werden.</p>
+              </div>
+              <div>
+                <strong className="text-foreground font-bold">{c.labels.marketing}:</strong>
+                <p className="mt-0.5">Marketing-Cookies werden verwendet, um Besuchern auf Websites zu folgen. Die Absicht ist, Anzeigen zu zeigen, die relevant und ansprechend für den einzelnen Benutzer sind.</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 lg:pt-1">
@@ -180,14 +206,14 @@ export function CookieConsent() {
             onClick={() =>
               save({ necessary: true, preferences: true, statistics: true, marketing: true })
             }
-            className="w-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-deep"
+            className="w-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-deep cursor-pointer"
           >
             {c.allow}
           </button>
           <button
             type="button"
             onClick={() => save({ ...cats, preferences: false, statistics: false, marketing: false })}
-            className="w-full border-2 border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-secondary"
+            className="w-full border-2 border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-secondary cursor-pointer"
           >
             {c.necessaryOnly}
           </button>
