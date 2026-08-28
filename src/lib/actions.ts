@@ -60,10 +60,10 @@ export const submitCandidateSupportAction = createServerFn({ method: "POST" })
       await sendCandidateSupportNotification({
         candidateName: data.candidateName,
         email: data.email,
-        phone: data.phone,
-        targetExam: data.targetExam,
+        phone: data.phone || "",
+        targetExam: data.targetExam || "telc Deutsch B2",
         requestedServices: services,
-        notes: data.notes,
+        notes: data.notes || "",
       });
 
       return { success: true, id: reg._id.toString() };
