@@ -9,8 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
-import appCss from "../styles.css?url";
 import { I18nProvider } from "../lib/i18n";
+import { reportAppError } from "../lib/error-reporting";
 import { getSiteUrl } from "../lib/siteUrl";
 
 function NotFoundComponent() {
@@ -38,6 +38,9 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error("App Runtime Error:", error);
   const router = useRouter();
+  useEffect(() => {
+    reportAppError(error, { boundary: "tanstack_root_error_component" });
+  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
