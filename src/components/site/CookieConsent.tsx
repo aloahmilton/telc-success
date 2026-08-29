@@ -25,24 +25,24 @@ type Copy = {
 
 const copy: Record<Lang, Copy> = {
   de: {
-    title: "Diese Website verwendet Cookies",
-    body: "Wir verwenden Cookies, um Inhalte und Anzeigen zu personalisieren, Funktionen für soziale Medien anbieten zu können und die Zugriffe auf unsere Website zu analysieren. Informationen zu Ihrer Nutzung geben wir außerdem an unsere Partner für soziale Medien, Werbung und Analysen weiter.",
-    allow: "Alle Cookies erlauben",
-    necessaryOnly: "Nur notwendige Cookies",
-    details: "Details anzeigen",
+    title: "Cookie-Einstellungen",
+    body: "Wir verwenden Cookies für eine optimale Funktionalität, Anpassung und Nutzungsanalyse.",
+    allow: "Alle akzeptieren",
+    necessaryOnly: "Nur notwendige",
+    details: "Details",
     labels: {
       necessary: "Notwendig",
       preferences: "Präferenzen",
-      statistics: "Statistiken",
+      statistics: "Statistik",
       marketing: "Marketing",
     },
   },
   en: {
-    title: "This website uses cookies",
-    body: "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners.",
-    allow: "Allow all cookies",
-    necessaryOnly: "Use necessary cookies only",
-    details: "Show details",
+    title: "Cookie Settings",
+    body: "We use cookies to ensure optimal site functionality, personalization, and performance analysis.",
+    allow: "Accept all",
+    necessaryOnly: "Necessary only",
+    details: "Details",
     labels: {
       necessary: "Necessary",
       preferences: "Preferences",
@@ -51,11 +51,11 @@ const copy: Record<Lang, Copy> = {
     },
   },
   es: {
-    title: "Este sitio web utiliza cookies",
-    body: "Utilizamos cookies para personalizar el contenido y los anuncios, ofrecer funciones de redes sociales y analizar el tráfico. También compartimos información sobre su uso del sitio con nuestros socios de redes sociales, publicidad y análisis.",
-    allow: "Permitir todas las cookies",
-    necessaryOnly: "Solo cookies necesarias",
-    details: "Ver detalles",
+    title: "Ajustes de cookies",
+    body: "Utilizamos cookies para garantizar la funcionalidad del sitio, la personalización y el análisis.",
+    allow: "Aceptar todas",
+    necessaryOnly: "Solo necesarias",
+    details: "Detalles",
     labels: {
       necessary: "Necesarias",
       preferences: "Preferencias",
@@ -64,15 +64,15 @@ const copy: Record<Lang, Copy> = {
     },
   },
   tr: {
-    title: "Bu web sitesi çerez kullanır",
-    body: "İçerikleri ve reklamları kişiselleştirmek, sosyal medya özellikleri sunmak ve trafiğimizi analiz etmek için çerezler kullanıyoruz. Sitemizi kullanımınıza ilişkin bilgileri sosyal medya, reklam ve analiz ortaklarımızla da paylaşıyoruz.",
-    allow: "Tüm çerezleri kabul et",
-    necessaryOnly: "Sadece gerekli çerezler",
-    details: "Ayrıntıları göster",
+    title: "Çerez Ayarları",
+    body: "Optimum site işlevselliği, kişiselleştirme ve analiz sağlamak için çerezler kullanıyoruz.",
+    allow: "Tümünü Kabul Et",
+    necessaryOnly: "Sadece Gerekli",
+    details: "Detaylar",
     labels: {
       necessary: "Gerekli",
       preferences: "Tercihler",
-      statistics: "İstatistikler",
+      statistics: "İstatistik",
       marketing: "Pazarlama",
     },
   },
@@ -90,8 +90,8 @@ function Toggle({
   locked?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <span className="text-xs font-bold text-foreground">{label}</span>
+    <label className="inline-flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs font-semibold text-foreground select-none">
+      <span>{label}</span>
       <button
         type="button"
         role="switch"
@@ -99,17 +99,17 @@ function Toggle({
         aria-label={label}
         disabled={locked}
         onClick={onChange}
-        className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-          checked ? "bg-primary" : "bg-foreground"
-        } ${locked ? "cursor-default" : "cursor-pointer"}`}
+        className={`relative h-4 w-7 sm:h-5 sm:w-9 shrink-0 rounded-full transition-colors ${
+          checked ? "bg-primary" : "bg-muted-foreground/40"
+        } ${locked ? "cursor-default opacity-80" : "cursor-pointer"}`}
       >
         <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-card transition-all ${
-            checked ? "left-[1.375rem]" : "left-0.5"
+          className={`absolute top-0.5 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-card transition-all shadow-sm ${
+            checked ? "left-3.5 sm:left-4.5" : "left-0.5"
           }`}
         />
       </button>
-    </div>
+    </label>
   );
 }
 
@@ -143,15 +143,19 @@ export function CookieConsent() {
     <div
       role="dialog"
       aria-label={c.title}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card shadow-lift max-h-[90vh] overflow-y-auto"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 backdrop-blur-md shadow-2xl max-h-[75vh] overflow-y-auto"
     >
-      <div className="mx-auto grid max-w-[105rem] gap-6 px-6 py-6 lg:grid-cols-[1fr_20rem]">
+      <div className="mx-auto grid max-w-7xl gap-3 p-3 sm:p-4 md:p-5 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
-          <h2 className="text-sm font-bold text-foreground">{c.title}</h2>
-          <p className="mt-2 max-w-4xl text-xs leading-relaxed text-muted-foreground">{c.body}</p>
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Telc-success" width={20} height={20} loading="lazy" className="h-5 w-5 shrink-0" />
+            <h2 className="text-xs sm:text-sm font-bold text-foreground">{c.title}</h2>
+          </div>
+          <p className="mt-1 text-[11px] sm:text-xs leading-normal text-muted-foreground line-clamp-2 sm:line-clamp-none">
+            {c.body}
+          </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <img src={logo} alt="Telc-success" width={28} height={28} loading="lazy" className="h-7 w-7" />
+          <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-2">
             <Toggle checked locked label={c.labels.necessary} />
             <Toggle
               checked={cats.preferences}
@@ -171,49 +175,49 @@ export function CookieConsent() {
             <button
               type="button"
               onClick={() => setShowDetails(!showDetails)}
-              className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline cursor-pointer"
+              className="inline-flex items-center gap-0.5 text-[11px] font-bold text-primary hover:underline cursor-pointer ml-auto sm:ml-0"
             >
               <span>{c.details}</span>
-              <ChevronRight className={`h-3.5 w-3.5 transition-transform ${showDetails ? "rotate-90" : ""}`} />
+              <ChevronRight className={`h-3 w-3 transition-transform ${showDetails ? "rotate-90" : ""}`} />
             </button>
           </div>
 
           {showDetails && (
-            <div className="mt-4 grid gap-3 rounded-lg border border-border bg-secondary/40 p-4 text-xs text-muted-foreground animate-in fade-in duration-200">
+            <div className="mt-2.5 grid gap-2 rounded-md border border-border/80 bg-secondary/30 p-2.5 text-[11px] text-muted-foreground animate-in fade-in duration-150 max-h-40 overflow-y-auto">
               <div>
-                <strong className="text-foreground font-bold">{c.labels.necessary}:</strong>
-                <p className="mt-0.5">Notwendige Cookies helfen dabei, eine Website nutzbar zu machen, indem sie Grundfunktionen wie Seitennavigation und Zugriff auf sichere Bereiche ermöglichen.</p>
+                <strong className="text-foreground font-semibold">{c.labels.necessary}:</strong>
+                <span className="ml-1">Erforderlich für Grundfunktionen und Navigation.</span>
               </div>
               <div>
-                <strong className="text-foreground font-bold">{c.labels.preferences}:</strong>
-                <p className="mt-0.5">Präferenz-Cookies ermöglichen einer Website sich an Informationen zu erinnern, die die Art beeinflussen, wie sich eine Website verhält oder aussieht, wie z.B. Ihre bevorzugte Sprache.</p>
+                <strong className="text-foreground font-semibold">{c.labels.preferences}:</strong>
+                <span className="ml-1">Speichert Einstellungen wie die Sprache.</span>
               </div>
               <div>
-                <strong className="text-foreground font-bold">{c.labels.statistics}:</strong>
-                <p className="mt-0.5">Statistik-Cookies helfen Website-Besitzern zu verstehen, wie Besucher mit Websites interagieren, indem Informationen anonym gesammelt und gemeldet werden.</p>
+                <strong className="text-foreground font-semibold">{c.labels.statistics}:</strong>
+                <span className="ml-1">Anonyme Nutzungsanalyse zur Verbesserung der Plattform.</span>
               </div>
               <div>
-                <strong className="text-foreground font-bold">{c.labels.marketing}:</strong>
-                <p className="mt-0.5">Marketing-Cookies werden verwendet, um Besuchern auf Websites zu folgen. Die Absicht ist, Anzeigen zu zeigen, die relevant und ansprechend für den einzelnen Benutzer sind.</p>
+                <strong className="text-foreground font-semibold">{c.labels.marketing}:</strong>
+                <span className="ml-1">Relevante Angebote und Partner-Inhalte.</span>
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col gap-3 lg:pt-1">
+        <div className="flex flex-row lg:flex-col gap-2 shrink-0 pt-1 lg:pt-0">
           <button
             type="button"
             onClick={() =>
               save({ necessary: true, preferences: true, statistics: true, marketing: true })
             }
-            className="w-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-deep cursor-pointer"
+            className="flex-1 sm:flex-initial bg-primary px-4 py-2 text-xs font-bold text-primary-foreground rounded transition-colors hover:bg-primary/90 cursor-pointer text-center"
           >
             {c.allow}
           </button>
           <button
             type="button"
             onClick={() => save({ ...cats, preferences: false, statistics: false, marketing: false })}
-            className="w-full border-2 border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-secondary cursor-pointer"
+            className="flex-1 sm:flex-initial border border-primary/80 px-4 py-2 text-xs font-bold text-primary rounded transition-colors hover:bg-secondary cursor-pointer text-center"
           >
             {c.necessaryOnly}
           </button>

@@ -3,15 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>telc Sprachprüfungen und Zertifikate</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>telc Sprachprüfungen, Zertifikate & Lehrmaterialien | Offizielles Angebot</title>
     <meta
       name="description"
-      content="Anerkannte Sprachzertifikate von A1 bis C2, passende Lehrmaterialien und Fortbildungen für Lehrkräfte, Unternehmen und Lernende."
+      content="Anerkannte telc Sprachzertifikate von A1 bis C2, telc Deutsch B2 & C1 Hochschule, Vorbereitungskurse, Prüfungszentrum-Suche, Lehrmaterialien und Qualifizierungen."
     />
+    <meta
+      name="keywords"
+      content="telc, telc Sprachprüfungen, telc Deutsch B2, telc C1 Hochschule, telc Zertifikat, Sprachzertifikat, Deutsch lernen, Lehrmaterialien, telc Vorbereitung, Prüfungszentrum"
+    />
+    <meta name="author" content="telc-success" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://telcsuccess.org/" />
+
+    <!-- Favicon & Icons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://telcsuccess.org/" />
+    <meta property="og:site_name" content="telc-success" />
+    <meta property="og:locale" content="de_DE" />
+    <meta
+      property="og:title"
+      content="telc Sprachprüfungen, Zertifikate & Lehrmaterialien"
+    />
+    <meta
+      property="og:description"
+      content="Internationale Sprachprüfungen von A1 bis C2. Offizielle Zertifikate, Prüfungszentren, Übungsmaterialien und Weiterbildung."
+    />
+    <meta property="og:image" content="https://telcsuccess.org/favicon.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://telcsuccess.org/" />
+    <meta
+      name="twitter:title"
+      content="telc Sprachprüfungen, Zertifikate & Lehrmaterialien"
+    />
+    <meta
+      name="twitter:description"
+      content="Anerkannte telc Sprachzertifikate von A1 bis C2, telc Deutsch B2 & C1 Hochschule."
+    />
+    <meta name="twitter:image" content="https://telcsuccess.org/favicon.png" />
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "telc-success",
+        "url": "https://telcsuccess.org",
+        "logo": "https://telcsuccess.org/favicon.png",
+        "description": "Anbieter von anerkannten telc Sprachprüfungen von A1 bis C2, Lehrmaterialien und Qualifizierungen für Lehrkräfte.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Bahnhofstraße 7",
+          "postalCode": "61352",
+          "addressLocality": "Bad Homburg",
+          "addressCountry": "DE"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "admin@telcsuccess.org",
+          "contactType": "customer service",
+          "availableLanguage": ["German", "English"]
+        },
+        "sameAs": [
+          "https://www.telc.net"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "telc-success",
+        "url": "https://telcsuccess.org",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://telcsuccess.org/lehrmaterialien?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
-  <body className="bg-background text-foreground antialiased min-h-screen">
+  <body class="bg-background text-foreground antialiased min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
