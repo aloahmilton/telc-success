@@ -17,7 +17,7 @@ export const Route = createFileRoute("/zertifikat-pruefen")({
   component: CertificateVerifyRoute,
 });
 
-export function CertificateVerifyRoute() {
+function CertificateVerifyRoute() {
   const [certCode, setCertCode] = useState("");
   const [lastName, setLastName] = useState("");
   const [result, setResult] = useState<null | "valid" | "invalid">(null);

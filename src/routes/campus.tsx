@@ -4,18 +4,19 @@ import { useState } from "react";
 
 import { Layout, PageHero } from "@/components/site/Layout";
 import { routes } from "@/lib/content";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 export const Route = createFileRoute("/campus")({
   head: () => ({
     meta: [
-      { title: "telc Campus | Digitale Lernplattform & Audio-Downloads" },
+      { title: "telc Campus & Audio Hub | Übungstests & Hörverstehen" },
       {
         name: "description",
         content:
           "Interaktive Übungstests, Audio-Downloads für Hörverstehen und digitale Lernmedien auf dem offiziellen telc Campus.",
       },
     ],
-    links: [{ rel: "canonical", href: "/campus" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/campus") }],
   }),
   component: CampusRoute,
 });

@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { I18nProvider } from "../lib/i18n";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { getSiteUrl } from "../lib/siteUrl";
 
 function NotFoundComponent() {
   return (
@@ -104,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Telc-success",
-          url: "/",
+          url: getSiteUrl(),
           address: {
             "@type": "PostalAddress",
             streetAddress: "Bahnhofstraße 7",

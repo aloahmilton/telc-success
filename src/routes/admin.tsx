@@ -51,7 +51,7 @@ export const Route = createFileRoute("/admin")({
 
 type TabGroup = "overview" | "exams" | "materials" | "training" | "news" | "centers" | "partners" | "settings";
 
-export function AdminDashboard() {
+function AdminDashboard() {
   const h = useT(home);
   const { lang, setLang } = useLang();
 

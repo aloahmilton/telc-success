@@ -4,19 +4,22 @@ import { Award, BookOpen, Building2, ChevronRight, FileText, Globe, GraduationCa
 import { Layout, PageHero } from "@/components/site/Layout";
 import { routes } from "@/lib/content";
 
+import { getSiteUrl } from "@/lib/siteUrl";
+
 export const Route = createFileRoute("/sitemap")({
   head: () => ({
     meta: [
-      { title: "Sitemap | telc Sprachprüfungen und Zertifikate" },
+      { title: "Sitemap | telc Übersicht aller Seiten" },
       {
         name: "description",
-        content: "Vollständige Übersicht aller Seiten, Prüfungen, Lehrmaterialien, Trainings und Services der telc gGmbH.",
+        content:
+          "Vollständige Übersicht aller telc Prüfungen, Lehrmaterialien, Fortbildungen und Services auf telc-success.",
       },
-      { property: "og:title", content: "Sitemap | telc Sprachprüfungen" },
+      { property: "og:title", content: "Sitemap | telc Übersicht aller Seiten" },
       { property: "og:description", content: "Übersicht über alle Inhalte und Seiten von telc." },
-      { property: "og:url", content: "/sitemap" },
+      { property: "og:url", content: getSiteUrl("/sitemap") },
     ],
-    links: [{ rel: "canonical", href: "/sitemap" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/sitemap") }],
   }),
   component: SitemapRoute,
 });

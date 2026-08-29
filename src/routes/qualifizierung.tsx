@@ -4,17 +4,19 @@ import { Award, Calendar, CheckCircle2, ChevronRight, GraduationCap, ShieldCheck
 import { Layout, PageHero } from "@/components/site/Layout";
 import { routes } from "@/lib/content";
 
+import { getSiteUrl } from "@/lib/siteUrl";
+
 export const Route = createFileRoute("/qualifizierung")({
   head: () => ({
     meta: [
-      { title: "Prüferqualifizierung & Lizenzen | telc Training" },
+      { title: "Prüferqualifizierung & Lizenzen | telc Portal" },
       {
         name: "description",
         content:
           "Werden Sie zertifizierte/r telc Prüfer/in oder Beworter/in. Alle Seminare, Qualifizierungsstufen und Lizenzkriterien.",
       },
     ],
-    links: [{ rel: "canonical", href: "/qualifizierung" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/qualifizierung") }],
   }),
   component: QualificationRoute,
 });

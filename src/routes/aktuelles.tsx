@@ -6,17 +6,19 @@ import { Layout, PageHero } from "@/components/site/Layout";
 import { news, routes } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
+import { getSiteUrl } from "@/lib/siteUrl";
+
 export const Route = createFileRoute("/aktuelles")({
   head: () => ({
     meta: [
-      { title: "Aktuelles & Presse | telc Nachrichten" },
+      { title: "Aktuelles & Presse | telc News Center" },
       {
         name: "description",
         content:
           "Neueste Nachrichten, Pressemitteilungen und Informationen zu Prüfungsordnung, Terminen und Bildungsveranstaltungen.",
       },
     ],
-    links: [{ rel: "canonical", href: "/aktuelles" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/aktuelles") }],
   }),
   component: NewsRoute,
 });

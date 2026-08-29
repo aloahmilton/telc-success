@@ -15,6 +15,8 @@ import { Layout } from "@/components/site/Layout";
 import { candidateSupport, home, news, routes, ui } from "@/lib/content";
 import { useLang, useT } from "@/lib/i18n";
 
+import { getSiteUrl } from "@/lib/siteUrl";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -30,9 +32,9 @@ export const Route = createFileRoute("/")({
         content:
           "Zertifikate A1–C2, Lehrwerke und Trainings – in über 3.000 Prüfungszentren weltweit.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: getSiteUrl("/") },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/") }],
   }),
   component: Index,
 });

@@ -7,20 +7,22 @@ import { footer } from "@/lib/content";
 import { useT } from "@/lib/i18n";
 import { contactPage } from "@/lib/pages";
 
+import { getSiteUrl } from "@/lib/siteUrl";
+
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
-      { title: "Kontakt | Telc-success" },
+      { title: "Kontakt & Beratung | telc Service" },
       {
         name: "description",
         content:
-          "Kontaktformular, Adresse und Servicezeiten von Telc-success – wir leiten Ihre Anfrage an das richtige Team weiter.",
+          "Nehmen Sie Kontakt mit telc auf – Formular für Anfragen zu Sprachprüfungen, Lehrmaterialien und Fortbildungen.",
       },
-      { property: "og:title", content: "Kontakt | Telc-success" },
+      { property: "og:title", content: "Kontakt & Beratung | telc Service" },
       { property: "og:description", content: "Schreiben Sie uns – Antwort in zwei Werktagen." },
-      { property: "og:url", content: "/kontakt" },
+      { property: "og:url", content: getSiteUrl("/kontakt") },
     ],
-    links: [{ rel: "canonical", href: "/kontakt" }],
+    links: [{ rel: "canonical", href: getSiteUrl("/kontakt") }],
   }),
   component: ContactRoute,
 });
