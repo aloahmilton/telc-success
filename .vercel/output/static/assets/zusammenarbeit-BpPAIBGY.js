@@ -1,1 +1,0 @@
-var e=`/assets/juergen-keicher-BY07DR57.png`,t=`/assets/zusammenarbeit-BzUUaOLc.jpg`;export{e as n,t};
