@@ -92,3 +92,11 @@ export const verifyCertificateAction = async ({
 
   return { success: true, found: false };
 };
+
+import { authenticateAdminUser } from "@/lib/adminDataService";
+
+export const adminLoginAction = async (email: string, pass: string) => {
+  return await authenticateAdminUser(email, pass);
+};
+
+

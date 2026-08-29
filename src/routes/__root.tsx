@@ -100,10 +100,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+import { Toaster } from "sonner";
+
 function RootComponent() {
   return (
     <I18nProvider>
       <Outlet />
+      <Toaster position="top-right" richColors />
     </I18nProvider>
   );
 }
+

@@ -108,8 +108,8 @@ export const productsData: ProductItem[] = [
   // Dynamically generate the remaining 122 products to complete all 126 items
   ...Array.from({ length: 122 }).map((_, idx) => {
     const pId = idx + 5;
-    const level = levels[idx % levels.length];
-    const category = categories[idx % categories.length];
+    const level = levels[idx % levels.length]!;
+    const category = categories[idx % categories.length]!;
     const priceVal = category === "Download" ? "Kostenlos" : `${(10 + (idx % 18) * 1.5).toFixed(2).replace(".", ",")} €`;
     const isBestseller = idx % 5 === 0;
 
