@@ -15,9 +15,18 @@ export const routes = {
   campus: "/campus",
   qualifizierung: "/qualifizierung",
   aktuelles: "/aktuelles",
+  shop: "/shop",
 } as const;
 
-export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> = {
+type NavLink = { label: string; href: string };
+type NavGroup = { heading: string; links: NavLink[] };
+
+export const nav: Locale<{
+  label: string;
+  to: string;
+  subItems?: string[];
+  megaDropdown?: { groups: NavGroup[] };
+}[]> = {
   de: [
     {
       label: "Sprachprüfungen",
@@ -37,10 +46,75 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
         "Prüfungsauswertung und Zertifikat",
         "Rechte und Pflichten Teilnehmende",
       ],
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Zertifikatsprüfungen",
+            links: [
+              { label: "Alle Zertifikatsprüfungen", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/" },
+              { label: "Deutsch", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/" },
+              { label: "Arabisch", href: "https://www.telc.net/sprachpruefungen/arabisch/" },
+              { label: "Spanisch", href: "https://www.telc.net/sprachpruefungen/spanisch/" },
+              { label: "Französisch", href: "https://www.telc.net/sprachpruefungen/franzoesisch/" },
+              { label: "Englisch", href: "https://www.telc.net/sprachpruefungen/englisch/" },
+              { label: "Italienisch", href: "https://www.telc.net/sprachpruefungen/italienisch/" },
+              { label: "Polnisch", href: "https://www.telc.net/sprachpruefungen/polnisch/" },
+              { label: "Portugiesisch", href: "https://www.telc.net/sprachpruefungen/portugiesisch/" },
+              { label: "Russisch", href: "https://www.telc.net/sprachpruefungen/russisch/" },
+              { label: "Türkisch", href: "https://www.telc.net/sprachpruefungen/tuerkisch/" },
+              { label: "Ukrainisch", href: "https://www.telc.net/sprachpruefungen/ukrainisch/" },
+            ],
+          },
+          {
+            heading: "Prüfungsformate",
+            links: [
+              { label: "telc Prüfungen digital mit DIGItelc 2.0", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen-digital-mit-digitelc-20/" },
+              { label: "telc Remote Tests", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/telc-remote-tests/" },
+              { label: "telc Prüfungen in Bad Homburg", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen/" },
+              { label: "Deutsch Test für den Beruf", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/deutsch-test-fuer-den-beruf/" },
+              { label: "Einstufungstest", href: "https://www.telc.net/sprachpruefungen/einstufungstest/" },
+            ],
+          },
+          {
+            heading: "Services & Infos",
+            links: [
+              { label: "Prüfungszentrum finden", href: "https://www.telc.net/sprachpruefungen/pruefungszentrum-finden/" },
+              { label: "telc Prüfungszentrum werden", href: "https://www.telc.net/telc-pruefungszentrum-werden/" },
+              { label: "Infos für Prüfungszentren", href: "https://www.telc.net/sprachpruefungen/infos-fuer-pruefungszentren/" },
+              { label: "telc Zertifikate DIGITAL", href: "https://www.telc.net/sprachpruefungen/telc-zertifikate-digital/" },
+              { label: "Warum telc Zertifikate?", href: "https://www.telc.net/sprachpruefungen/warum-telc-zertifikate/" },
+              { label: "Verifikation von telc Zertifikaten", href: "https://results.telc.net/" },
+              { label: "Sprachprüfungen: Support & FAQ", href: "https://www.telc.net/sprachpruefungen/sprachpruefungen-support-faqs/" },
+            ],
+          },
+        ],
+      },
     },
     {
       label: "Lehrmaterialien",
       to: routes.materials,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Themen",
+            links: [
+              { label: "Deutsch für die Integration", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-integration/" },
+              { label: "Allgemeinsprachliches Deutsch", href: "https://www.telc.net/lehrmaterialien/allgemeinsprachliches-deutsch/" },
+              { label: "Deutsch für den Beruf", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-den-beruf/" },
+              { label: "Deutschlernen mit telc Lehrwerken", href: "https://www.telc.net/lehrmaterialien/deutschlernen-mit-telc-lehrwerken/" },
+              { label: "Deutsch für die Hochschule", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-hochschule/" },
+            ],
+          },
+          {
+            heading: "Service",
+            links: [
+              { label: "Verlagsprogramm: Support & FAQ", href: "https://www.telc.net/lehrmaterialien/support-faq-verlagsprogramm/" },
+              { label: "Downloadbereich", href: "https://www.telc.net/lehrmaterialien/downloadbereich/" },
+              { label: "Infopakete", href: "https://telc.print-server.net/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Übersicht Lehrmaterialien",
         "Lehrwerke und Testhefte",
@@ -55,6 +129,31 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Trainingsangebote",
       to: routes.training,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Angebote",
+            links: [
+              { label: "Fortbildungen: Unterrichten", href: "https://www.telc.net/trainingsangebote/training/" },
+              { label: "Qualifizierungen: Prüfen und Bewerten", href: "https://www.telc.net/trainingsangebote/pruefen-und-bewerten-qualifizierungen/" },
+              { label: "Angebote für Deutschlernende", href: "https://www.telc.net/trainingsangebote/deutsch-lernen-und-pruefung-bestehen-mit-telc/" },
+              { label: "Inhouse-Veranstaltungen", href: "https://www.telc.net/trainingsangebote/inhouse-veranstaltungen/" },
+              { label: "ZQ BSK", href: "https://www.telc.net/trainingsangebote/training/beruf/zq-bsk/" },
+              { label: "Qualifizierung Prüfungsverantwortung", href: "https://www.telc.net/trainingsangebote/qualifizierung-pruefungsverantwortung/" },
+            ],
+          },
+          {
+            heading: "Formate & Info",
+            links: [
+              { label: "Qualifikationsphasen", href: "https://www.telc.net/trainingsangebote/qualifikationsphasen/" },
+              { label: "Trainingsformate", href: "https://www.telc.net/trainingsangebote/trainingsformate/" },
+              { label: "telc Campus", href: "https://www.telc.net/trainingsangebote/campus/" },
+              { label: "DaF/DaZ Blog", href: "https://www.telc.net/trainingsangebote/daf/daz-wissensportal/" },
+              { label: "Training: Support & FAQ", href: "https://www.telc.net/trainingsangebote/training-support-faq/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Fortbildungen für Lehrkräfte",
         "Qualifizierung von Prüfenden",
@@ -71,6 +170,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Wir sind telc",
       to: routes.about,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Über uns",
+            links: [
+              { label: "Die Zukunft spricht telc", href: "https://www.telc.net/wir-sind-telc/die-zukunft-spricht-telc/" },
+              { label: "telc in der Presse", href: "https://www.telc.net/wir-sind-telc/pressemitteilungen/" },
+              { label: "Aktuelles", href: "https://www.telc.net/wir-sind-telc/aktuelles/" },
+              { label: "Meet telc", href: "https://www.telc.net/wir-sind-telc/meet-telc/" },
+              { label: "Newsletter", href: "https://www.telc.net/wir-sind-telc/newsletter/" },
+            ],
+          },
+          {
+            heading: "Karriere & Events",
+            links: [
+              { label: "Karriere", href: "https://www.telc.net/wir-sind-telc/karriere/" },
+              { label: "Stellenangebote", href: "https://www.telc.net/wir-sind-telc/stellenangebote/" },
+              { label: "Konferenzräume in Bad Homburg", href: "https://www.telc.net/konferenzraeume/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Profil & Organisation",
         "Stellenangebote",
@@ -89,6 +210,49 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Language exams",
       to: routes.exams,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Certificate exams",
+            links: [
+              { label: "All certificate exams", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/" },
+              { label: "German", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/" },
+              { label: "Arabic", href: "https://www.telc.net/sprachpruefungen/arabisch/" },
+              { label: "Spanish", href: "https://www.telc.net/sprachpruefungen/spanisch/" },
+              { label: "French", href: "https://www.telc.net/sprachpruefungen/franzoesisch/" },
+              { label: "English", href: "https://www.telc.net/sprachpruefungen/englisch/" },
+              { label: "Italian", href: "https://www.telc.net/sprachpruefungen/italienisch/" },
+              { label: "Polish", href: "https://www.telc.net/sprachpruefungen/polnisch/" },
+              { label: "Portuguese", href: "https://www.telc.net/sprachpruefungen/portugiesisch/" },
+              { label: "Russian", href: "https://www.telc.net/sprachpruefungen/russisch/" },
+              { label: "Turkish", href: "https://www.telc.net/sprachpruefungen/tuerkisch/" },
+              { label: "Ukrainian", href: "https://www.telc.net/sprachpruefungen/ukrainisch/" },
+            ],
+          },
+          {
+            heading: "Exam formats",
+            links: [
+              { label: "Digital exams with DIGItelc 2.0", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen-digital-mit-digitelc-20/" },
+              { label: "telc Remote Tests", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/telc-remote-tests/" },
+              { label: "telc Exams in Bad Homburg", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen/" },
+              { label: "German Test for Work", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/deutsch-test-fuer-den-beruf/" },
+              { label: "Placement test", href: "https://www.telc.net/sprachpruefungen/einstufungstest/" },
+            ],
+          },
+          {
+            heading: "Services & Info",
+            links: [
+              { label: "Find exam centre", href: "https://www.telc.net/sprachpruefungen/pruefungszentrum-finden/" },
+              { label: "Become an exam centre", href: "https://www.telc.net/telc-pruefungszentrum-werden/" },
+              { label: "Info for exam centres", href: "https://www.telc.net/sprachpruefungen/infos-fuer-pruefungszentren/" },
+              { label: "telc Certificates DIGITAL", href: "https://www.telc.net/sprachpruefungen/telc-zertifikate-digital/" },
+              { label: "Why telc Certificates?", href: "https://www.telc.net/sprachpruefungen/warum-telc-zertifikate/" },
+              { label: "Verify telc certificate", href: "https://results.telc.net/" },
+              { label: "Support & FAQ", href: "https://www.telc.net/sprachpruefungen/sprachpruefungen-support-faqs/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "All language exams A1 to C2",
         "German for work",
@@ -103,6 +267,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Learning materials",
       to: routes.materials,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Topics",
+            links: [
+              { label: "German for Integration", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-integration/" },
+              { label: "General German", href: "https://www.telc.net/lehrmaterialien/allgemeinsprachliches-deutsch/" },
+              { label: "German for Work", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-den-beruf/" },
+              { label: "Learning German with telc", href: "https://www.telc.net/lehrmaterialien/deutschlernen-mit-telc-lehrwerken/" },
+              { label: "German for University", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-hochschule/" },
+            ],
+          },
+          {
+            heading: "Service",
+            links: [
+              { label: "Publisher programme: Support & FAQ", href: "https://www.telc.net/lehrmaterialien/support-faq-verlagsprogramm/" },
+              { label: "Download area", href: "https://www.telc.net/lehrmaterialien/downloadbereich/" },
+              { label: "Info packages", href: "https://telc.print-server.net/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Learning materials overview",
         "Textbooks and testbooks",
@@ -114,6 +300,31 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Training",
       to: routes.training,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Courses",
+            links: [
+              { label: "Teacher training", href: "https://www.telc.net/trainingsangebote/training/" },
+              { label: "Examiner qualification", href: "https://www.telc.net/trainingsangebote/pruefen-und-bewerten-qualifizierungen/" },
+              { label: "Courses for German learners", href: "https://www.telc.net/trainingsangebote/deutsch-lernen-und-pruefung-bestehen-mit-telc/" },
+              { label: "In-house events", href: "https://www.telc.net/trainingsangebote/inhouse-veranstaltungen/" },
+              { label: "ZQ BSK", href: "https://www.telc.net/trainingsangebote/training/beruf/zq-bsk/" },
+              { label: "Exam responsibility qualification", href: "https://www.telc.net/trainingsangebote/qualifizierung-pruefungsverantwortung/" },
+            ],
+          },
+          {
+            heading: "Formats & Info",
+            links: [
+              { label: "Qualification phases", href: "https://www.telc.net/trainingsangebote/qualifikationsphasen/" },
+              { label: "Training formats", href: "https://www.telc.net/trainingsangebote/trainingsformate/" },
+              { label: "telc Campus", href: "https://www.telc.net/trainingsangebote/campus/" },
+              { label: "DaF/DaZ Blog", href: "https://www.telc.net/trainingsangebote/daf/daz-wissensportal/" },
+              { label: "Training: Support & FAQ", href: "https://www.telc.net/trainingsangebote/training-support-faq/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Teacher training",
         "Examiner qualification",
@@ -124,6 +335,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "We are telc",
       to: routes.about,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "About us",
+            links: [
+              { label: "The future speaks telc", href: "https://www.telc.net/wir-sind-telc/die-zukunft-spricht-telc/" },
+              { label: "telc in the press", href: "https://www.telc.net/wir-sind-telc/pressemitteilungen/" },
+              { label: "News", href: "https://www.telc.net/wir-sind-telc/aktuelles/" },
+              { label: "Meet telc", href: "https://www.telc.net/wir-sind-telc/meet-telc/" },
+              { label: "Newsletter", href: "https://www.telc.net/wir-sind-telc/newsletter/" },
+            ],
+          },
+          {
+            heading: "Careers & Events",
+            links: [
+              { label: "Careers", href: "https://www.telc.net/wir-sind-telc/karriere/" },
+              { label: "Job openings", href: "https://www.telc.net/wir-sind-telc/stellenangebote/" },
+              { label: "Conference rooms Bad Homburg", href: "https://www.telc.net/konferenzraeume/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Profile & Organization",
         "Job openings",
@@ -138,6 +371,49 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Exámenes de idiomas",
       to: routes.exams,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Exámenes de certificación",
+            links: [
+              { label: "Todos los exámenes", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/" },
+              { label: "Alemán", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/" },
+              { label: "Árabe", href: "https://www.telc.net/sprachpruefungen/arabisch/" },
+              { label: "Español", href: "https://www.telc.net/sprachpruefungen/spanisch/" },
+              { label: "Francés", href: "https://www.telc.net/sprachpruefungen/franzoesisch/" },
+              { label: "Inglés", href: "https://www.telc.net/sprachpruefungen/englisch/" },
+              { label: "Italiano", href: "https://www.telc.net/sprachpruefungen/italienisch/" },
+              { label: "Polaco", href: "https://www.telc.net/sprachpruefungen/polnisch/" },
+              { label: "Portugués", href: "https://www.telc.net/sprachpruefungen/portugiesisch/" },
+              { label: "Ruso", href: "https://www.telc.net/sprachpruefungen/russisch/" },
+              { label: "Turco", href: "https://www.telc.net/sprachpruefungen/tuerkisch/" },
+              { label: "Ucraniano", href: "https://www.telc.net/sprachpruefungen/ukrainisch/" },
+            ],
+          },
+          {
+            heading: "Formatos de examen",
+            links: [
+              { label: "Exámenes digitales DIGItelc 2.0", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen-digital-mit-digitelc-20/" },
+              { label: "telc Remote Tests", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/telc-remote-tests/" },
+              { label: "Exámenes en Bad Homburg", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen/" },
+              { label: "Prueba de alemán profesional", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/deutsch-test-fuer-den-beruf/" },
+              { label: "Test de nivel", href: "https://www.telc.net/sprachpruefungen/einstufungstest/" },
+            ],
+          },
+          {
+            heading: "Servicios e información",
+            links: [
+              { label: "Buscar centro de examen", href: "https://www.telc.net/sprachpruefungen/pruefungszentrum-finden/" },
+              { label: "Convertirse en centro", href: "https://www.telc.net/telc-pruefungszentrum-werden/" },
+              { label: "Info para centros", href: "https://www.telc.net/sprachpruefungen/infos-fuer-pruefungszentren/" },
+              { label: "Certificados DIGITAL", href: "https://www.telc.net/sprachpruefungen/telc-zertifikate-digital/" },
+              { label: "¿Por qué telc?", href: "https://www.telc.net/sprachpruefungen/warum-telc-zertifikate/" },
+              { label: "Verificar certificado", href: "https://results.telc.net/" },
+              { label: "Soporte & FAQ", href: "https://www.telc.net/sprachpruefungen/sprachpruefungen-support-faqs/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Todos los exámenes de A1 a C2",
         "Alemán para el trabajo",
@@ -152,6 +428,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Materiales didácticos",
       to: routes.materials,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Temas",
+            links: [
+              { label: "Alemán para la integración", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-integration/" },
+              { label: "Alemán general", href: "https://www.telc.net/lehrmaterialien/allgemeinsprachliches-deutsch/" },
+              { label: "Alemán para el trabajo", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-den-beruf/" },
+              { label: "Aprender alemán con telc", href: "https://www.telc.net/lehrmaterialien/deutschlernen-mit-telc-lehrwerken/" },
+              { label: "Alemán para la universidad", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-hochschule/" },
+            ],
+          },
+          {
+            heading: "Servicio",
+            links: [
+              { label: "Programa editorial: Soporte & FAQ", href: "https://www.telc.net/lehrmaterialien/support-faq-verlagsprogramm/" },
+              { label: "Área de descargas", href: "https://www.telc.net/lehrmaterialien/downloadbereich/" },
+              { label: "Paquetes de información", href: "https://telc.print-server.net/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Resumen de materiales",
         "Libros de texto y exámenes",
@@ -163,6 +461,31 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Formación",
       to: routes.training,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Cursos",
+            links: [
+              { label: "Formación docente", href: "https://www.telc.net/trainingsangebote/training/" },
+              { label: "Cualificación de examinadores", href: "https://www.telc.net/trainingsangebote/pruefen-und-bewerten-qualifizierungen/" },
+              { label: "Cursos para aprendices de alemán", href: "https://www.telc.net/trainingsangebote/deutsch-lernen-und-pruefung-bestehen-mit-telc/" },
+              { label: "Eventos in-house", href: "https://www.telc.net/trainingsangebote/inhouse-veranstaltungen/" },
+              { label: "ZQ BSK", href: "https://www.telc.net/trainingsangebote/training/beruf/zq-bsk/" },
+              { label: "Cualificación responsabilidad de examen", href: "https://www.telc.net/trainingsangebote/qualifizierung-pruefungsverantwortung/" },
+            ],
+          },
+          {
+            heading: "Formatos e Info",
+            links: [
+              { label: "Fases de cualificación", href: "https://www.telc.net/trainingsangebote/qualifikationsphasen/" },
+              { label: "Formatos de formación", href: "https://www.telc.net/trainingsangebote/trainingsformate/" },
+              { label: "telc Campus", href: "https://www.telc.net/trainingsangebote/campus/" },
+              { label: "Blog DaF/DaZ", href: "https://www.telc.net/trainingsangebote/daf/daz-wissensportal/" },
+              { label: "Formación: Soporte & FAQ", href: "https://www.telc.net/trainingsangebote/training-support-faq/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Formación docente",
         "Cualificación de examinadores",
@@ -173,6 +496,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Somos telc",
       to: routes.about,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Sobre nosotros",
+            links: [
+              { label: "El futuro habla telc", href: "https://www.telc.net/wir-sind-telc/die-zukunft-spricht-telc/" },
+              { label: "telc en la prensa", href: "https://www.telc.net/wir-sind-telc/pressemitteilungen/" },
+              { label: "Novedades", href: "https://www.telc.net/wir-sind-telc/aktuelles/" },
+              { label: "Meet telc", href: "https://www.telc.net/wir-sind-telc/meet-telc/" },
+              { label: "Newsletter", href: "https://www.telc.net/wir-sind-telc/newsletter/" },
+            ],
+          },
+          {
+            heading: "Empleo & Eventos",
+            links: [
+              { label: "Carreras", href: "https://www.telc.net/wir-sind-telc/karriere/" },
+              { label: "Ofertas de empleo", href: "https://www.telc.net/wir-sind-telc/stellenangebote/" },
+              { label: "Salas de conferencias Bad Homburg", href: "https://www.telc.net/konferenzraeume/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Perfil y organización",
         "Ofertas de empleo",
@@ -187,6 +532,49 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Dil sınavları",
       to: routes.exams,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Sertifika sınavları",
+            links: [
+              { label: "Tüm sertifika sınavları", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/" },
+              { label: "Almanca", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/" },
+              { label: "Arapça", href: "https://www.telc.net/sprachpruefungen/arabisch/" },
+              { label: "İspanyolca", href: "https://www.telc.net/sprachpruefungen/spanisch/" },
+              { label: "Fransızca", href: "https://www.telc.net/sprachpruefungen/franzoesisch/" },
+              { label: "İngilizce", href: "https://www.telc.net/sprachpruefungen/englisch/" },
+              { label: "İtalyanca", href: "https://www.telc.net/sprachpruefungen/italienisch/" },
+              { label: "Lehçe", href: "https://www.telc.net/sprachpruefungen/polnisch/" },
+              { label: "Portekizce", href: "https://www.telc.net/sprachpruefungen/portugiesisch/" },
+              { label: "Rusça", href: "https://www.telc.net/sprachpruefungen/russisch/" },
+              { label: "Türkçe", href: "https://www.telc.net/sprachpruefungen/tuerkisch/" },
+              { label: "Ukraynaca", href: "https://www.telc.net/sprachpruefungen/ukrainisch/" },
+            ],
+          },
+          {
+            heading: "Sınav formatları",
+            links: [
+              { label: "DIGItelc 2.0 ile dijital sınavlar", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen-digital-mit-digitelc-20/" },
+              { label: "telc Uzaktan Sınavlar", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/telc-remote-tests/" },
+              { label: "Bad Homburg'da sınavlar", href: "https://www.telc.net/sprachpruefungen/telc-pruefungen/" },
+              { label: "İş için Almanca testi", href: "https://www.telc.net/sprachpruefungen/zertifikatspruefung/deutsch/deutsch-test-fuer-den-beruf/" },
+              { label: "Seviye belirleme testi", href: "https://www.telc.net/sprachpruefungen/einstufungstest/" },
+            ],
+          },
+          {
+            heading: "Hizmetler ve Bilgi",
+            links: [
+              { label: "Sınav merkezi bul", href: "https://www.telc.net/sprachpruefungen/pruefungszentrum-finden/" },
+              { label: "Sınav merkezi ol", href: "https://www.telc.net/telc-pruefungszentrum-werden/" },
+              { label: "Sınav merkezleri için bilgi", href: "https://www.telc.net/sprachpruefungen/infos-fuer-pruefungszentren/" },
+              { label: "telc Sertifikaları DİJİTAL", href: "https://www.telc.net/sprachpruefungen/telc-zertifikate-digital/" },
+              { label: "Neden telc Sertifikaları?", href: "https://www.telc.net/sprachpruefungen/warum-telc-zertifikate/" },
+              { label: "Sertifika doğrulama", href: "https://results.telc.net/" },
+              { label: "Destek & SSS", href: "https://www.telc.net/sprachpruefungen/sprachpruefungen-support-faqs/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "A1–C2 tüm dil sınavları",
         "İş için Almanca",
@@ -201,6 +589,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Öğrenme materyalleri",
       to: routes.materials,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Konular",
+            links: [
+              { label: "Entegrasyon için Almanca", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-integration/" },
+              { label: "Genel Almanca", href: "https://www.telc.net/lehrmaterialien/allgemeinsprachliches-deutsch/" },
+              { label: "İş için Almanca", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-den-beruf/" },
+              { label: "telc ile Almanca öğren", href: "https://www.telc.net/lehrmaterialien/deutschlernen-mit-telc-lehrwerken/" },
+              { label: "Üniversite için Almanca", href: "https://www.telc.net/lehrmaterialien/deutsch-fuer-die-hochschule/" },
+            ],
+          },
+          {
+            heading: "Hizmet",
+            links: [
+              { label: "Yayın programı: Destek & SSS", href: "https://www.telc.net/lehrmaterialien/support-faq-verlagsprogramm/" },
+              { label: "İndirme alanı", href: "https://www.telc.net/lehrmaterialien/downloadbereich/" },
+              { label: "Bilgi paketleri", href: "https://telc.print-server.net/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Materyal genel bakış",
         "Ders ve alıştırma kitapları",
@@ -212,6 +622,31 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Eğitimler",
       to: routes.training,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Kurslar",
+            links: [
+              { label: "Öğretmen eğitimi", href: "https://www.telc.net/trainingsangebote/training/" },
+              { label: "Sınav görevlisi yeterliliği", href: "https://www.telc.net/trainingsangebote/pruefen-und-bewerten-qualifizierungen/" },
+              { label: "Almanca öğrenenler için kurslar", href: "https://www.telc.net/trainingsangebote/deutsch-lernen-und-pruefung-bestehen-mit-telc/" },
+              { label: "Kurum içi etkinlikler", href: "https://www.telc.net/trainingsangebote/inhouse-veranstaltungen/" },
+              { label: "ZQ BSK", href: "https://www.telc.net/trainingsangebote/training/beruf/zq-bsk/" },
+              { label: "Sınav sorumluluğu yeterliliği", href: "https://www.telc.net/trainingsangebote/qualifizierung-pruefungsverantwortung/" },
+            ],
+          },
+          {
+            heading: "Formatlar & Bilgi",
+            links: [
+              { label: "Yeterlilik aşamaları", href: "https://www.telc.net/trainingsangebote/qualifikationsphasen/" },
+              { label: "Eğitim formatları", href: "https://www.telc.net/trainingsangebote/trainingsformate/" },
+              { label: "telc Campus", href: "https://www.telc.net/trainingsangebote/campus/" },
+              { label: "DaF/DaZ Blogu", href: "https://www.telc.net/trainingsangebote/daf/daz-wissensportal/" },
+              { label: "Eğitim: Destek & SSS", href: "https://www.telc.net/trainingsangebote/training-support-faq/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Öğretmen eğitimleri",
         "Sınav görevlisi yeterliliği",
@@ -222,6 +657,28 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     {
       label: "Biz telc",
       to: routes.about,
+      megaDropdown: {
+        groups: [
+          {
+            heading: "Hakkımızda",
+            links: [
+              { label: "Geleceğin dili telc", href: "https://www.telc.net/wir-sind-telc/die-zukunft-spricht-telc/" },
+              { label: "telc basında", href: "https://www.telc.net/wir-sind-telc/pressemitteilungen/" },
+              { label: "Güncel", href: "https://www.telc.net/wir-sind-telc/aktuelles/" },
+              { label: "Meet telc", href: "https://www.telc.net/wir-sind-telc/meet-telc/" },
+              { label: "Bülten", href: "https://www.telc.net/wir-sind-telc/newsletter/" },
+            ],
+          },
+          {
+            heading: "Kariyer & Etkinlikler",
+            links: [
+              { label: "Kariyer", href: "https://www.telc.net/wir-sind-telc/karriere/" },
+              { label: "İş ilanları", href: "https://www.telc.net/wir-sind-telc/stellenangebote/" },
+              { label: "Bad Homburg konferans salonları", href: "https://www.telc.net/konferenzraeume/" },
+            ],
+          },
+        ],
+      },
       subItems: [
         "Profil ve organizasyon",
         "İş ilanları",
@@ -233,6 +690,7 @@ export const nav: Locale<{ label: string; to: string; subItems?: string[] }[]> =
     { label: "İletişim", to: routes.contact },
   ],
 };
+
 
 export const metaNav: Locale<string[]> = {
   de: ["Shop", "Campus", "Training", "Community"],

@@ -44,7 +44,6 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { adminLoginAction } from "@/lib/actions";
-import { fetchAllAdminData, dbCreateExam, dbDeleteExam, dbCreateCertificate } from "@/lib/adminDataService";
 import { LANGS, useLang, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/admin")({
@@ -680,19 +679,22 @@ function AdminDashboard() {
       }
     }
 
-    // Connect to live MongoDB Data Pipeline
-    fetchAllAdminData().then((res) => {
-      if (res.success) {
-        if (res.exams.length) setExams(res.exams);
-        if (res.materials.length) setMaterials(res.materials);
-        if (res.trainings.length) setTrainings(res.trainings);
-        if (res.newsList.length) setNewsList(res.newsList);
-        if (res.centers.length) setCenters(res.centers);
-        if (res.partners.length) setPartners(res.partners);
-        if (res.certificates.length) setCertificates(res.certificates);
-        if (res.inquiries.length) setInquiries(res.inquiries);
+    // Connect to live MongoDB Data Pipeline via API
+    fetch("/api/admin/data")
+      .then((r) => r.ok ? r.json() : null)
+      .then((res) => {
+      if (res?.success) {
+        if (res.exams?.length) setExams(res.exams);
+        if (res.materials?.length) setMaterials(res.materials);
+        if (res.trainings?.length) setTrainings(res.trainings);
+        if (res.newsList?.length) setNewsList(res.newsList);
+        if (res.centers?.length) setCenters(res.centers);
+        if (res.partners?.length) setPartners(res.partners);
+        if (res.certificates?.length) setCertificates(res.certificates);
+        if (res.inquiries?.length) setInquiries(res.inquiries);
       }
-    });
+    }).catch(() => { /* silently fall through to local state */ });
+
   }, []);
 
   // Handle Login
@@ -746,7 +748,7 @@ function AdminDashboard() {
       const newId = `TELC-${examForm.level}-${Math.floor(100 + Math.random() * 900)}`;
       const newExam = { id: newId, ...examForm };
       setExams([newExam, ...exams]);
-      dbCreateExam(newExam);
+      fetch("/api/admin/exams", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newExam) }).catch(() => {});
       toast.success(`Neue Prüfung ${newId} erstellt!`);
     }
     setIsExamModalOpen(false);
@@ -756,7 +758,7 @@ function AdminDashboard() {
   const handleDeleteExam = (id: string) => {
     if (window.confirm(`Prüfung ${id} wirklich löschen?`)) {
       setExams(exams.filter((ex) => ex.id !== id));
-      dbDeleteExam(id);
+      fetch(`/api/admin/exams/${id}`, { method: "DELETE" }).catch(() => {});
       toast.success(`Prüfung ${id} gelöscht.`);
     }
   };

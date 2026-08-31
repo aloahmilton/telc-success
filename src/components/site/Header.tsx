@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, ChevronUp, Menu, Search, X } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, ChevronUp, ExternalLink, Menu, Search, X } from "lucide-react";
+import { useRef, useState } from "react";
 
 import { SearchModal } from "@/components/site/SearchModal";
 import { metaNav, nav, ui } from "@/lib/content";
@@ -58,6 +58,8 @@ export function Header() {
   const [langOpen, setLangOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [expandedIndices, setExpandedIndices] = useState<number[]>([0, 1, 2, 3]);
+  const [megaOpenIndex, setMegaOpenIndex] = useState<number | null>(null);
+  const megaLeaveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const toggleAccordion = (idx: number) => {
     setExpandedIndices((prev) =>
@@ -66,6 +68,26 @@ export function Header() {
   };
 
   const activeLang = LANGS.find((l) => l.code === lang) || LANGS[0];
+
+  // Hover handlers with a small delay to prevent flicker
+  const handleNavEnter = (index: number) => {
+    if (megaLeaveTimeout.current) clearTimeout(megaLeaveTimeout.current);
+    if (items[index]?.megaDropdown) {
+      setMegaOpenIndex(index);
+    } else {
+      setMegaOpenIndex(null);
+    }
+  };
+
+  const handleNavLeave = () => {
+    megaLeaveTimeout.current = setTimeout(() => setMegaOpenIndex(null), 120);
+  };
+
+  const handleDropdownEnter = () => {
+    if (megaLeaveTimeout.current) clearTimeout(megaLeaveTimeout.current);
+  };
+
+  const activeMega = megaOpenIndex !== null ? items[megaOpenIndex]?.megaDropdown : null;
 
   return (
     <header id="page-header" className="sticky top-0 z-40 border-t-4 border-primary border-b border-border bg-card shadow-sm">
@@ -80,15 +102,30 @@ export function Header() {
 
         {/* Desktop Main Navigation */}
         <nav className="hidden items-center gap-7 lg:flex">
-          {items.map((item) => (
-            <Link
+          {items.map((item, index) => (
+            <div
               key={item.to}
-              to={item.to}
-              className="text-sm font-bold text-foreground transition-colors hover:text-primary py-2"
-              activeProps={{ className: "text-primary border-b-2 border-primary pb-1" }}
+              className="relative flex items-center"
+              onMouseEnter={() => handleNavEnter(index)}
+              onMouseLeave={handleNavLeave}
             >
-              {item.label}
-            </Link>
+              <Link
+                to={item.to}
+                className={`flex items-center gap-1 text-sm font-bold text-foreground transition-colors hover:text-primary py-2 ${
+                  megaOpenIndex === index && item.megaDropdown ? "text-primary" : ""
+                }`}
+                activeProps={{ className: "text-primary border-b-2 border-primary pb-1" }}
+              >
+                {item.label}
+                {item.megaDropdown && (
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 stroke-[2.5] transition-transform duration-200 ${
+                      megaOpenIndex === index ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </Link>
+            </div>
           ))}
         </nav>
 
@@ -96,14 +133,28 @@ export function Header() {
         <div className="ml-auto flex items-center gap-3.5 md:gap-5">
           {/* Meta Links (Desktop only) */}
           <div className="hidden items-center gap-3 border-r border-border pr-4 text-xs font-semibold text-muted-foreground lg:flex">
-            {meta.map((m) => (
-              <span key={m} className="cursor-pointer transition-colors hover:text-foreground">
-                {m}
-              </span>
-            ))}
+            {meta.map((m) => {
+              const isShop = m.toLowerCase().includes("shop") || m.toLowerCase().includes("tienda") || m.toLowerCase().includes("mağaza");
+              const isCampus = m.toLowerCase().includes("campus") || m.toLowerCase().includes("kampüs");
+              const isTraining = m.toLowerCase().includes("train") || m.toLowerCase().includes("formac") || m.toLowerCase().includes("eğitim");
+              const to = isShop ? "/shop" : isCampus ? "/campus" : isTraining ? "/trainingsangebote" : "/ueber-uns";
+              return (
+                <Link
+                  key={m}
+                  to={to}
+                  className={`cursor-pointer transition-colors ${
+                    isShop
+                      ? "bg-primary text-primary-foreground font-bold px-2 py-0.5 rounded-sm hover:bg-primary/90"
+                      : "hover:text-foreground"
+                  }`}
+                >
+                  {m}
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Search Button (Clean icon without background circle) */}
+          {/* Search Button */}
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
@@ -113,7 +164,7 @@ export function Header() {
             <Search className="h-5 w-5 stroke-[2.2]" />
           </button>
 
-          {/* Language Switcher Badge with Round Flag (No border) */}
+          {/* Language Switcher */}
           <div className="relative">
             <button
               type="button"
@@ -159,7 +210,49 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer (Matches telc.net screenshot 3 expanded view) */}
+      {/* ── Mega Dropdown Panel ── */}
+      {activeMega && (
+        <div
+          className="absolute left-0 right-0 z-50 border-t-2 border-primary bg-card shadow-xl"
+          style={{
+            animation: "megaFadeIn 0.18s ease-out both",
+          }}
+          onMouseEnter={handleDropdownEnter}
+          onMouseLeave={handleNavLeave}
+        >
+          <div className="container-page py-8">
+            <div className="grid grid-cols-3 gap-10">
+              {activeMega.groups.map((group) => (
+                <div key={group.heading}>
+                  {/* Group heading */}
+                  <p className="mb-3 text-[0.65rem] font-extrabold uppercase tracking-widest text-primary border-b border-primary/20 pb-2">
+                    {group.heading}
+                  </p>
+                  <ul className="space-y-1">
+                    {group.links.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-1.5 rounded px-1 py-1 text-sm text-foreground/80 transition-all hover:bg-primary/5 hover:text-primary hover:translate-x-0.5"
+                          onClick={() => setMegaOpenIndex(null)}
+                        >
+                          <span className="h-1 w-1 rounded-full bg-primary/40 shrink-0 group-hover:bg-primary transition-colors" />
+                          <span className="flex-1 leading-snug">{link.label}</span>
+                          <ExternalLink className="h-3 w-3 shrink-0 opacity-0 group-hover:opacity-40 transition-opacity" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Menu Drawer */}
       {open && (
         <div className="border-t border-border bg-[#f8f9fa] lg:hidden max-h-[80vh] overflow-y-auto">
           <nav className="flex flex-col">
@@ -204,23 +297,41 @@ export function Header() {
               );
             })}
 
-            {/* Bottom Meta Nav Links (Shop, Campus, Training, Community) */}
+            {/* Bottom Meta Nav Links */}
             <div className="container-page flex items-center justify-between py-6 px-4 text-xs font-bold text-foreground/80 border-t border-border/80 bg-[#f8f9fa]">
-              {meta.map((m) => (
-                <span key={m} className="cursor-pointer transition-colors hover:text-primary">
-                  {m}
-                </span>
-              ))}
+              {meta.map((m) => {
+                const isShop = m.toLowerCase().includes("shop") || m.toLowerCase().includes("tienda") || m.toLowerCase().includes("mağaza");
+                const isCampus = m.toLowerCase().includes("campus") || m.toLowerCase().includes("kampüs");
+                const isTraining = m.toLowerCase().includes("train") || m.toLowerCase().includes("formac") || m.toLowerCase().includes("eğitim");
+                const to = isShop ? "/shop" : isCampus ? "/campus" : isTraining ? "/trainingsangebote" : "/ueber-uns";
+                return (
+                  <Link
+                    key={m}
+                    to={to}
+                    onClick={() => setOpen(false)}
+                    className={`cursor-pointer transition-colors ${
+                      isShop ? "text-primary font-bold underline" : "hover:text-primary"
+                    }`}
+                  >
+                    {m}
+                  </Link>
+                );
+              })}
             </div>
           </nav>
         </div>
       )}
+
+      {/* Mega dropdown fade-in keyframes */}
+      <style>{`
+        @keyframes megaFadeIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
       {/* Global Live Search Dialog */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
-
-
-

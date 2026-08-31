@@ -17,6 +17,7 @@ import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as LehrmaterialienRouteImport } from './routes/lehrmaterialien'
 import { Route as PruefungszentrumFindenRouteImport } from './routes/pruefungszentrum-finden'
 import { Route as QualifizierungRouteImport } from './routes/qualifizierung'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as SprachpruefungenRouteImport } from './routes/sprachpruefungen'
 import { Route as TrainingsangeboteRouteImport } from './routes/trainingsangebote'
@@ -63,6 +64,11 @@ const QualifizierungRoute = QualifizierungRouteImport.update({
   path: '/qualifizierung',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapRoute = SitemapRouteImport.update({
   id: '/sitemap',
   path: '/sitemap',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/lehrmaterialien': typeof LehrmaterialienRoute
   '/pruefungszentrum-finden': typeof PruefungszentrumFindenRoute
   '/qualifizierung': typeof QualifizierungRoute
+  '/shop': typeof ShopRoute
   '/sitemap': typeof SitemapRoute
   '/sprachpruefungen': typeof SprachpruefungenRoute
   '/trainingsangebote': typeof TrainingsangeboteRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/lehrmaterialien': typeof LehrmaterialienRoute
   '/pruefungszentrum-finden': typeof PruefungszentrumFindenRoute
   '/qualifizierung': typeof QualifizierungRoute
+  '/shop': typeof ShopRoute
   '/sitemap': typeof SitemapRoute
   '/sprachpruefungen': typeof SprachpruefungenRoute
   '/trainingsangebote': typeof TrainingsangeboteRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/lehrmaterialien': typeof LehrmaterialienRoute
   '/pruefungszentrum-finden': typeof PruefungszentrumFindenRoute
   '/qualifizierung': typeof QualifizierungRoute
+  '/shop': typeof ShopRoute
   '/sitemap': typeof SitemapRoute
   '/sprachpruefungen': typeof SprachpruefungenRoute
   '/trainingsangebote': typeof TrainingsangeboteRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/lehrmaterialien'
     | '/pruefungszentrum-finden'
     | '/qualifizierung'
+    | '/shop'
     | '/sitemap'
     | '/sprachpruefungen'
     | '/trainingsangebote'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/lehrmaterialien'
     | '/pruefungszentrum-finden'
     | '/qualifizierung'
+    | '/shop'
     | '/sitemap'
     | '/sprachpruefungen'
     | '/trainingsangebote'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '/lehrmaterialien'
     | '/pruefungszentrum-finden'
     | '/qualifizierung'
+    | '/shop'
     | '/sitemap'
     | '/sprachpruefungen'
     | '/trainingsangebote'
@@ -192,6 +204,7 @@ export interface RootRouteChildren {
   LehrmaterialienRoute: typeof LehrmaterialienRoute
   PruefungszentrumFindenRoute: typeof PruefungszentrumFindenRoute
   QualifizierungRoute: typeof QualifizierungRoute
+  ShopRoute: typeof ShopRoute
   SitemapRoute: typeof SitemapRoute
   SprachpruefungenRoute: typeof SprachpruefungenRoute
   TrainingsangeboteRoute: typeof TrainingsangeboteRoute
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QualifizierungRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap': {
       id: '/sitemap'
       path: '/sitemap'
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   LehrmaterialienRoute: LehrmaterialienRoute,
   PruefungszentrumFindenRoute: PruefungszentrumFindenRoute,
   QualifizierungRoute: QualifizierungRoute,
+  ShopRoute: ShopRoute,
   SitemapRoute: SitemapRoute,
   SprachpruefungenRoute: SprachpruefungenRoute,
   TrainingsangeboteRoute: TrainingsangeboteRoute,

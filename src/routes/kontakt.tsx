@@ -1,128 +1,215 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { ChevronDown, Phone } from "lucide-react";
 
 import { Layout, PageHero } from "@/components/site/Layout";
-import { submitContactInquiry } from "@/lib/actions";
-import { footer } from "@/lib/content";
-import { useT } from "@/lib/i18n";
-import { contactPage } from "@/lib/pages";
-
 import { getSiteUrl } from "@/lib/siteUrl";
 
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
-      { title: "Kontakt & Beratung | telc Service" },
+      { title: "Kontakt | telc Service" },
       {
         name: "description",
         content:
-          "Nehmen Sie Kontakt mit telc auf – Formular für Anfragen zu Sprachprüfungen, Lehrmaterialien und Fortbildungen.",
+          "Nehmen Sie Kontakt mit telc auf – FAQ, Öffnungszeiten und Kontaktformular für Anfragen zu Sprachprüfungen, Lehrmaterialien und Fortbildungen.",
       },
-      { property: "og:title", content: "Kontakt & Beratung | telc Service" },
-      { property: "og:description", content: "Schreiben Sie uns – Antwort in zwei Werktagen." },
+      { property: "og:title", content: "Kontakt | telc Service" },
       { property: "og:url", content: getSiteUrl("/kontakt") },
     ],
     links: [{ rel: "canonical", href: getSiteUrl("/kontakt") }],
   }),
-  component: ContactRoute,
+  component: KontaktRoute,
 });
 
-function ContactRoute() {
-  const p = useT(contactPage);
-  const f = useT(footer);
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+// ─── Data ────────────────────────────────────────────────────────────────────
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const topic = formData.get("topic") as string;
-    const message = formData.get("message") as string;
+const faqs = [
+  "Wie kann ich Duplikate von meinem Zertifikat anfordern?",
+  "Wie können Prüfungszentren Korrekturen anfordern oder Zertifikate anpassen lassen?",
+  "Wo kann ich mich bei telc bewerben?",
+  "Wo kann ich Lehrmaterialien bestellen?",
+  "Eine Nachmeldung zur Prüfungsanmeldung funktioniert nicht, was soll ich tun?",
+  "Was passiert mit den Prüfungsmaterialien, wenn die Prüfung ausfällt?",
+  "Wo und wie melde ich eine barrierefreie Prüfung an?",
+  "Wie sehe ich den Stand der Auswertung meiner Prüfung?",
+  "Mir fehlen Prüfungsunterlagen, was soll ich machen?",
+  "Kann ich die angemeldete Prüfung verschieben?",
+  "Sind Kopien von Prüfungsmaterialien erlaubt?",
+  "Was kann ich tun, wenn ich kein Protokoll für eine Prüfung habe?",
+  "Wie kann ich die Echtheit meiner Zertifikate bestätigen?",
+  "Wie kann ich mich als Teilnehmende*r für eine Prüfung anmelden?",
+  "Ich habe mein Zertifikat verloren und habe keine hilfreichen Daten mehr, was soll ich tun?",
+  "Wo kann ich Prüfungszentren finden?",
+  "Wie kann ich/ können meine Lehrkräfte eine Prüfer-/ Bewerterlizenz erwerben?",
+  "Welche Fortbildungen und Qualifizierungen bietet telc für Lehrkräfte?",
+];
 
-    try {
-      await submitContactInquiry({ data: { name, email, topic, message } });
-      setSent(true);
-    } catch (err) {
-      console.error(err);
-      setSent(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+const regularHours = [
+  { day: "Montag", hours: "08:30 — 17:00 Uhr", note: "" },
+  { day: "Dienstag", hours: "08:30 — 17:00 Uhr", note: "" },
+  { day: "Mittwoch", hours: "08:30 — 17:00 Uhr", note: "" },
+  { day: "Donnerstag", hours: "08:30 — 17:00 Uhr", note: "" },
+  { day: "Freitag", hours: "08:30 — 16:00 Uhr", note: "" },
+  {
+    day: "Samstag",
+    hours: "08:00 — 12:00 Uhr",
+    note: "Nur für laufende Prüfungen und Seminare",
+  },
+];
+
+const specialHours = [
+  { day: "Samstag, 26. Dezember 2026", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Montag, 28. Dezember 2026", hours: "09:00 — 16:00 Uhr", note: "Geänderte Servicezeiten" },
+  { day: "Dienstag, 29. Dezember 2026", hours: "09:00 — 16:00 Uhr", note: "Geänderte Servicezeiten" },
+  { day: "Mittwoch, 30. Dezember 2026", hours: "09:00 — 16:00 Uhr", note: "Geänderte Servicezeiten" },
+  { day: "Neujahr (1. Januar)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Karfreitag, Karsamstag, Ostermontag", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Tag der Arbeit (1. Mai)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Christi Himmelfahrt (29. Mai)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Pfingstmontag (9. Juni)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Fronleichnam (19. Juni)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Tag der Deutschen Einheit (3. Oktober)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Heiligabend (24. Dezember)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "1. Weihnachtstag (25. Dezember)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "2. Weihnachtstag (26. Dezember)", hours: "—", note: "Kundenservice geschlossen" },
+  { day: "Silvester (31. Dezember)", hours: "—", note: "Kundenservice geschlossen" },
+];
+
+const userTypes = [
+  "Bitte auswählen",
+  "Ich bin Mitarbeiter eines Prüfungszentrums oder Bildungseinrichtung",
+  "Ich bin Prüfungsteilnehmer:in",
+  "Ich bin Shop-Kund:in",
+  "Ich bin Prüfer:in oder Bewerter:in",
+  "Andere",
+];
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+function KontaktRoute() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [userType, setUserType] = useState("");
 
   return (
     <Layout>
-      <PageHero title={p.title} text={p.intro} />
-      <div className="container-page grid gap-10 py-16 md:grid-cols-[1.4fr_1fr]">
-        <form
-          className="rounded-md bg-card p-6 shadow-card"
-          onSubmit={handleSubmit}
-        >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="text-xs font-bold text-foreground">
-              {p.fields.name}
-              <input
-                required
-                name="name"
-                className="mt-1 w-full rounded-sm border border-input bg-background px-3 py-2 text-sm font-normal"
-              />
-            </label>
-            <label className="text-xs font-bold text-foreground">
-              {p.fields.email}
-              <input
-                required
-                type="email"
-                name="email"
-                className="mt-1 w-full rounded-sm border border-input bg-background px-3 py-2 text-sm font-normal"
-              />
-            </label>
-          </div>
-          <label className="mt-4 block text-xs font-bold text-foreground">
-            {p.fields.topic}
-            <select
-              name="topic"
-              className="mt-1 w-full rounded-sm border border-input bg-background px-3 py-2 text-sm font-normal"
-            >
-              {p.topics.map((t) => (
-                <option key={t}>{t}</option>
-              ))}
-            </select>
-          </label>
-          <label className="mt-4 block text-xs font-bold text-foreground">
-            {p.fields.message}
-            <textarea
-              required
-              name="message"
-              rows={6}
-              className="mt-1 w-full rounded-sm border border-input bg-background px-3 py-2 text-sm font-normal"
-            />
-          </label>
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-6 rounded-sm bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-50"
-          >
-            {loading ? "Wird gesendet..." : p.submit}
-          </button>
-          {sent && (
-            <p className="mt-4 text-xs font-semibold text-emerald-600 flex items-center gap-1.5">
-              <span>✓ {p.sent} (In MongoDB Atlas gespeichert)</span>
-            </p>
-          )}
-        </form>
+      <PageHero
+        title="Sie möchten Kontakt zu telc aufnehmen?"
+        text="Schreiben Sie uns, rufen Sie uns an oder vereinbaren Sie einen persönlichen Termin mit unserem Außendienstteam – wir freuen uns auf Sie! Eventuell können Sie auch bereits Antworten auf Ihre Fragen in unserem FAQ finden."
+      />
 
-        <aside className="rounded-md bg-secondary p-6">
-          <h2 className="text-sm font-bold text-foreground">{p.officeTitle}</h2>
-          <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
-            {f.addressLines.map((l) => (
-              <li key={l}>{l}</li>
+      <div className="container-page py-12 space-y-12">
+        {/* Breadcrumb */}
+        <nav className="text-xs text-muted-foreground flex gap-1.5 items-center">
+          <a href="/" className="hover:text-primary transition-colors">Home</a>
+          <span>/</span>
+          <span className="text-foreground font-medium">Kontakt</span>
+        </nav>
+
+        {/* FAQ Section */}
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-6">
+            Antworten auf häufig gestellte Fragen (FAQ)
+          </h2>
+          <div className="divide-y divide-border rounded-md border border-border overflow-hidden">
+            {faqs.map((q, i) => (
+              <button
+                key={i}
+                id={`faq-${i}`}
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-medium text-foreground hover:bg-secondary/60 transition-colors"
+              >
+                <span>{q}</span>
+                <ChevronDown
+                  size={16}
+                  className={`shrink-0 ml-4 text-muted-foreground transition-transform duration-200 ${
+                    openFaq === i ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
             ))}
-          </ul>
-          <p className="mt-4 text-xs text-muted-foreground">{p.hours}</p>
-        </aside>
+          </div>
+        </section>
+
+        {/* Contact Help Section */}
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-2">
+            Wie können wir Ihnen weiterhelfen?
+          </h2>
+          <p className="text-sm text-muted-foreground mb-4">Wer sind Sie?</p>
+          <select
+            id="user-type-select"
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
+            className="w-full max-w-lg rounded-sm border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {userTypes.map((t) => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
+        </section>
+
+        {/* Customer Service */}
+        <section>
+          <div className="flex items-start gap-3 mb-6">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <Phone size={18} className="text-primary" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-foreground">Kundenservice</h2>
+              <a
+                href="tel:+496172388200077"
+                className="text-lg font-bold text-primary hover:underline"
+              >
+                +49 6172 38820 - 77
+              </a>
+            </div>
+          </div>
+
+          {/* Regular hours table */}
+          <div className="overflow-x-auto rounded-md border border-border mb-8">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-secondary/40">
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Tag</th>
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Öffnungszeiten</th>
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Hinweis</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {regularHours.map((row) => (
+                  <tr key={row.day} className="hover:bg-secondary/30 transition-colors">
+                    <td className="px-5 py-3 font-medium text-foreground">{row.day}</td>
+                    <td className="px-5 py-3 text-muted-foreground">{row.hours}</td>
+                    <td className="px-5 py-3 text-muted-foreground text-xs">{row.note || "–"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Special / holiday hours table */}
+          <div className="overflow-x-auto rounded-md border border-border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-secondary/40">
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Tag</th>
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Öffnungszeiten</th>
+                  <th className="px-5 py-3 text-left font-semibold text-foreground">Hinweis</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {specialHours.map((row) => (
+                  <tr key={row.day} className="hover:bg-secondary/30 transition-colors">
+                    <td className="px-5 py-3 font-medium text-primary/80">{row.day}</td>
+                    <td className="px-5 py-3 text-muted-foreground">{row.hours}</td>
+                    <td className="px-5 py-3 text-muted-foreground text-xs">{row.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </Layout>
   );
