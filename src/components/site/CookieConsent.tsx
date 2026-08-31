@@ -125,10 +125,6 @@ export function CookieConsent() {
     marketing: false,
   });
 
-  useEffect(() => {
-    if (!window.localStorage.getItem(STORAGE_KEY)) setVisible(true);
-  }, []);
-
   const save = (value: Categories) => {
     window.localStorage.setItem(
       STORAGE_KEY,
@@ -136,6 +132,18 @@ export function CookieConsent() {
     );
     setVisible(false);
   };
+
+  useEffect(() => {
+    if (window.localStorage.getItem(STORAGE_KEY)) return;
+
+    setVisible(true);
+
+    const timer = setTimeout(() => {
+      save({ necessary: true, preferences: true, statistics: true, marketing: true });
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!visible) return null;
 

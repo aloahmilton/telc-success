@@ -101,12 +101,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 import { Toaster } from "sonner";
+import { FloatingWhatsApp } from "../components/site/FloatingWhatsApp";
 
 function RootComponent() {
   return (
     <I18nProvider>
       <Outlet />
       <Toaster position="top-right" richColors />
+      <FloatingWhatsApp />
     </I18nProvider>
   );
 }
