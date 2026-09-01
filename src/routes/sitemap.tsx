@@ -47,7 +47,7 @@ const sitemapSections = [
       { label: "Prüferqualifizierung & Lizenzen", to: routes.qualifizierung, desc: "Lizenzkriterien, Qualifizierungsseminare & Prüferportal." },
       { label: "Aktuelles & Pressemitteilungen", to: routes.aktuelles, desc: "Neueste Entwicklungen, Nachrichten und Veranstaltungshinweise." },
       { label: "Candidate B2 Support", to: routes.home, desc: "Spezialisierte Begleitung, Vorbereitung & Anmeldung zur telc Deutsch B2 Prüfung." },
-      { label: "Admin Portal", to: "/admin", desc: "Verwaltung von Prüfungen, Anfragen und Netzwerkstatus (Intern)." },
+      { label: "telc Online Shop", to: routes.shop, desc: "Offizielle Lehrwerke DaF/DaZ, Übungstests und digitale Prüfungsvorbereitung." },
     ],
   },
   {

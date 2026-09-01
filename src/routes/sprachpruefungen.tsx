@@ -6,6 +6,7 @@ import { CardGrid, Layout, PageHero, Prose } from "@/components/site/Layout";
 import { routes } from "@/lib/content";
 import { useT } from "@/lib/i18n";
 import { examsPage } from "@/lib/pages";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 export const Route = createFileRoute("/sprachpruefungen")({
   head: () => ({
@@ -15,6 +16,42 @@ export const Route = createFileRoute("/sprachpruefungen")({
         name: "description",
         content:
           "Anerkannte Sprachzertifikate von A1 bis C2 für Beruf, Studium und Aufenthalt – in über 3.000 Prüfungszentren weltweit.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Sprachprüfungen A1–C2 | telc Sprachzertifikate" },
+      {
+        property: "og:description",
+        content:
+          "Anerkannte Sprachzertifikate von A1 bis C2 für Beruf, Studium und Aufenthalt – in über 3.000 Prüfungszentren weltweit.",
+      },
+      { property: "og:url", content: getSiteUrl("/sprachpruefungen") },
+      { property: "og:image", content: "https://telcsuccess.org/favicon.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Sprachprüfungen A1–C2 | telc Sprachzertifikate" },
+      {
+        name: "twitter:description",
+        content:
+          "Anerkannte Sprachzertifikate von A1 bis C2 für Beruf, Studium und Aufenthalt.",
+      },
+      { name: "twitter:image", content: "https://telcsuccess.org/favicon.png" },
+    ],
+    links: [{ rel: "canonical", href: getSiteUrl("/sprachpruefungen") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "EducationalOccupationalCredential",
+          "name": "telc Sprachzertifikate A1–C2",
+          "description":
+            "Anerkannte europäische Sprachprüfungen von A1 bis C2 für Alltag, Beruf, Studium und Einbürgerung.",
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "EducationalOrganization",
+            "name": "telc-success",
+            "url": "https://telcsuccess.org",
+          },
+        }),
       },
     ],
   }),

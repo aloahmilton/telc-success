@@ -35,14 +35,41 @@ export const Route = createFileRoute("/shop")({
         content:
           "Der offizielle telc Online-Shop: Entdecken Sie Lehrwerke DaF/DaZ, Übungstests und digitale Produkte zur optimalen Vorbereitung auf telc Sprachprüfungen.",
       },
-      { property: "og:title", content: "telc Online Shop" },
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "telc Online Shop | Offizielle Lehrwerke & Übungstests" },
       {
         property: "og:description",
         content: "Offizielle Lehrwerke, Übungstests und digitale Lernmaterialien von telc.",
       },
       { property: "og:url", content: getSiteUrl("/shop") },
+      { property: "og:image", content: "https://telcsuccess.org/favicon.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "telc Online Shop | Lehrwerke & Übungstests" },
+      {
+        name: "twitter:description",
+        content: "Offizielle Lehrwerke, Übungstests und digitale Lernmaterialien von telc.",
+      },
+      { name: "twitter:image", content: "https://telcsuccess.org/favicon.png" },
     ],
     links: [{ rel: "canonical", href: getSiteUrl("/shop") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "telc Online Shop",
+          "description":
+            "Der offizielle telc Online-Shop: Entdecken Sie Lehrwerke DaF/DaZ, Übungstests und digitale Produkte zur Vorbereitung auf Sprachprüfungen.",
+          "url": getSiteUrl("/shop"),
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "telc-success",
+            "url": "https://telcsuccess.org",
+          },
+        }),
+      },
+    ],
   }),
   component: ShopRoute,
 });
@@ -149,6 +176,14 @@ const categories = [
   },
 ];
 
+function WhatsAppIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.372-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214l-3.741.982l.998-3.648l-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884c2.64 0 5.122 1.03 6.988 2.901a9.825 9.825 0 0 1 2.891 6.994c-.001 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.549 4.142 1.594 5.945L0 24l6.337-1.664a11.87 11.87 0 0 0 5.717 1.457h.006c6.555 0 11.89-5.335 11.893-11.893c0-3.181-1.238-6.167-3.487-8.414" />
+    </svg>
+  );
+}
+
 function ShopRoute() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<{ product: Product; qty: number }[]>([]);
@@ -192,6 +227,46 @@ function ShopRoute() {
     e.preventDefault();
     if (!searchQuery.trim()) return;
     toast.info(`Suche nach "${searchQuery}" im Shop-Katalog...`);
+  };
+
+  const handleCheckoutViaWhatsApp = () => {
+    if (cart.length === 0) return;
+
+    const totalSum = cart
+      .reduce((sum, item) => {
+        const num = parseFloat(
+          item.product.price.replace("€", "").replace(",", ".").trim()
+        );
+        return sum + (isNaN(num) ? 0 : num) * item.qty;
+      }, 0)
+      .toFixed(2)
+      .replace(".", ",");
+
+    const itemList = cart
+      .map(
+        (item) =>
+          `• ${item.qty}x ${item.product.title} (Niveau ${item.product.level}) - ${item.product.price}`
+      )
+      .join("\n");
+
+    const message = `Hallo telc Kundenservice,\n\nich möchte folgende Artikel aus dem Online-Shop bestellen:\n\n${itemList}\n\nGesamtsumme (inkl. MwSt.): ${totalSum} €\n\nBitte senden Sie mir die Bestätigung und Zahlungs-/Versanddetails zu. Vielen Dank!`;
+
+    const whatsappUrl = `https://wa.me/4917614433079?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    toast.success("Bestellung wird an WhatsApp übermittelt...", {
+      description: "Chat mit dem telc Support (+49 176 14433079) geöffnet.",
+    });
+    setCartDrawerOpen(false);
+  };
+
+  const handleDirectWhatsAppOrder = (product: Product) => {
+    const message = `Hallo telc Kundenservice,\n\nich interessiere mich für folgenden Artikel und möchte diesen direkt bestellen:\n\n• 1x ${product.title} (Niveau ${product.level}) - ${product.price}\n\nBitte senden Sie mir die Bestätigung und Zahlungs-/Versanddetails zu. Vielen Dank!`;
+    const whatsappUrl = `https://wa.me/4917614433079?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    toast.success("Anfrage wird an WhatsApp übermittelt...", {
+      description: "Chat mit dem telc Support (+49 176 14433079) geöffnet.",
+    });
+    setQuickViewProduct(null);
   };
 
   return (
@@ -411,6 +486,28 @@ function ShopRoute() {
           )}
         </nav>
       </header>
+
+      {/* WhatsApp Express Checkout Notice */}
+      <div className="bg-emerald-50/90 border-b border-emerald-200 px-4 py-2.5 text-xs text-emerald-950">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white">
+              <WhatsAppIcon className="h-3.5 w-3.5" />
+            </span>
+            <span>
+              <strong>Direktbestellung via WhatsApp aktiv:</strong> Wählen Sie Ihre Produkte aus und bestellen Sie bequem per 1-Klick über unseren Kundenservice (+49 176 14433079).
+            </span>
+          </div>
+          <a
+            href="https://wa.me/4917614433079?text=Hallo%20telc%20Support%2C%20ich%20habe%20eine%20Frage%20zum%20Online-Shop%20und%20den%20Lehrmaterialien."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-bold text-emerald-800 hover:text-emerald-950 underline"
+          >
+            <span>Fragen & Beratung</span>
+          </a>
+        </div>
+      </div>
 
       {/* ── 4. Main Hero Promo Section (3 Cards) ── */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
@@ -923,14 +1020,19 @@ function ShopRoute() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => {
-                      toast.success("Bestellvorgang wird gestartet...");
-                      setCartDrawerOpen(false);
-                    }}
-                    className="w-full bg-[#990000] hover:bg-[#800000] text-white py-3 rounded-sm font-bold text-sm shadow-md transition-colors"
+                    onClick={handleCheckoutViaWhatsApp}
+                    className="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white py-3.5 rounded-sm font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                   >
-                    Zur Kasse gehen
+                    <WhatsAppIcon className="h-5 w-5" />
+                    <span>Jetzt per WhatsApp bestellen</span>
                   </button>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded p-2.5 text-[0.7rem] text-emerald-950 leading-snug">
+                    <p className="font-bold text-emerald-900 mb-0.5 flex items-center gap-1">
+                      <CheckCircle className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                      <span>Offizieller telc WhatsApp-Bestellservice:</span>
+                    </p>
+                    Ihre Artikelauswahl wird direkt an unseren Kundenservice (+49 176 14433079) übermittelt. Sie erhalten sofort Ihre Bestellbestätigung und bequeme Zahlungsoptionen.
+                  </div>
                   <p className="text-[0.65rem] text-center text-neutral-500">
                     Kostenloser Versand innerhalb Deutschlands ab 30 €
                   </p>
@@ -976,24 +1078,33 @@ function ShopRoute() {
                 </p>
               </div>
             </div>
-            <div className="pt-2 flex gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
               <button
                 type="button"
                 onClick={() => {
                   handleAddToCart(quickViewProduct);
                   setQuickViewProduct(null);
                 }}
-                className="flex-1 bg-[#990000] hover:bg-[#800000] text-white py-2.5 rounded-sm font-bold text-xs flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 bg-[#990000] hover:bg-[#800000] text-white py-2.5 px-3 rounded-sm font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <ShoppingCart className="h-4 w-4" />
                 <span>In den Warenkorb</span>
               </button>
               <button
                 type="button"
+                onClick={() => handleDirectWhatsAppOrder(quickViewProduct)}
+                className="flex-1 bg-[#25D366] hover:bg-[#20ba5a] text-white py-2.5 px-3 rounded-sm font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm cursor-pointer"
+              >
+                <WhatsAppIcon className="h-4 w-4" />
+                <span>Direkt per WhatsApp</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => {
                   toggleWishlist(quickViewProduct.id, quickViewProduct.title);
                 }}
-                className="px-4 py-2.5 border border-neutral-300 rounded-sm text-neutral-700 hover:border-[#990000] hover:text-[#990000] transition-colors"
+                className="px-3 py-2.5 border border-neutral-300 rounded-sm text-neutral-700 hover:border-[#990000] hover:text-[#990000] transition-colors cursor-pointer"
+                title="Auf die Merkliste"
               >
                 <Heart
                   className={`h-4 w-4 ${
